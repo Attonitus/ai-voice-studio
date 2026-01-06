@@ -1,0 +1,12 @@
+services:
+  todosDB:
+    image: postgres:16
+    container_name: ai-voice-studio
+    restart: always
+    ports:
+      - 5451:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
