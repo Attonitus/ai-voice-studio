@@ -6,8 +6,10 @@ import {
 
 import { Separator } from "~/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
-import BreadcrumbPageClient from "./components/BreadcrumbPageClient";
-import AppSidebar from "./components/AppSidebar";
+import BreadcrumbPageClient from "./components/sidebar/BreadcrumbPageClient";
+import AppSidebar from "./components/sidebar/AppSidebar";
+import { getUser } from "~/actions/tt"
+import { redirect } from "next/navigation";
 
 
 export const metadata = {
@@ -17,14 +19,21 @@ export const metadata = {
 };
 
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children
 }: {
     children: React.ReactNode;
 }) {
+
+    const { user, success } = await getUser()
+
+    if (!success || !user) {
+        redirect("/");
+    }
+
     return (
         <SidebarProvider>
-            <AppSidebar />
+            <AppSidebar user={user} />
             <SidebarInset className="flex h-screen flex-col">
                 <header className="bg-background/95 supports-backgrop-filter:bg-background/60 border-border/40 sticky top-0 z-10 border-b px-6 py-3 shadow-sm backdrop-blur">
                     <div className="flex shrink-0 grow items-center gap-3">

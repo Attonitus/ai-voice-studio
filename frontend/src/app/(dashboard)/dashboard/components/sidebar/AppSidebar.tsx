@@ -1,10 +1,23 @@
 "use client"
+
 import { FolderOpen, LayoutDashboard, Settings, Sparkles, User, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu } from "~/components/ui/sidebar";
-import { NavUser } from "./NavUser";
-import NavMain from "./NavMain";
 import MobileSidebarClose from "./MobileSidebarClose";
+import NavMain from "./NavMain";
+import { NavUser } from "./NavUser";
+import Credits from "./Credits";
+
+interface User {
+    id: string,
+    name: string,
+    email: string,
+    emailVerified: boolean,
+    image: string | null,
+    createdAt: Date,
+    updatedAt: Date,
+    credits: number
+}
 
 const navUserLinks = [
     {
@@ -47,9 +60,14 @@ const navMainLinks = [
 
 ]
 
-export default function AppSidebar() {
+interface Props{
+    user : User
+}
+
+export default function AppSidebar({user}: Props) {
     return (
         <Sidebar className="from-background to-muted/20 border-r-0 bg-gradient-to-b">
+
             <SidebarHeader className="px-3">
                 <MobileSidebarClose />
                 <SidebarGroup>
@@ -73,8 +91,11 @@ export default function AppSidebar() {
                 </SidebarMenu>
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavUser links={navUserLinks} user={{ avatar: "/public/favicon.ico", email: "h@h.com", name: "Hogan" }} />
+            <SidebarFooter className="bg-muted/30 border-t p-3">
+                <div className="mb-3 flex w-full items-center justify-center gap-2 text-xs">
+                    <Credits credits={user.credits} />
+                </div>
+                <NavUser links={navUserLinks} user={user} />
             </SidebarFooter>
         </Sidebar>
     )
