@@ -1,9 +1,9 @@
 "use server"
 
 import { headers } from "next/headers"
-import { cache } from "react"
 import { auth } from "~/lib/auth"
 import { db } from "~/server/db"
+import { redirect } from "next/navigation"
 
 interface User {
     id: string,
@@ -16,7 +16,7 @@ interface User {
     credits: number
 }
 
-export const getUserCredits = cache(async () => {
+export const getUserCredits = async () => {
     try {
         const session = await auth.api.getSession({
             headers: await headers(),
@@ -40,9 +40,9 @@ export const getUserCredits = cache(async () => {
         console.error("Error fetching user credits:", error);
         return { success: false, error: "Failed to fetch credits", credits: 0 };
     }
-});
+};
 
-export const getUser = cache(async () => {
+export const getUser = async () => {
     try {
         const session = await auth.api.getSession({
             headers: await headers(),
@@ -54,7 +54,7 @@ export const getUser = cache(async () => {
 
         const user: User = await db.user.findUnique({
             where: { id: session.user.id },
-            select: { name: true, email: true, image: true, credits: true},
+            select: { name: true, email: true, image: true, credits: true },
         });
 
         if (!user) {
@@ -67,4 +67,12 @@ export const getUser = cache(async () => {
         console.error("Error fetching user credits:", error);
         return { success: false, error: "Failed to fetch user" };
     }
-});
+};
+
+export const logoutAction = async() => {
+    await auth.api.signOut({
+        headers: await headers(),
+    })
+
+    redirect("/")
+}

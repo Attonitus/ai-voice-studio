@@ -7,6 +7,7 @@ import MobileSidebarClose from "./MobileSidebarClose";
 import NavMain from "./NavMain";
 import { NavUser } from "./NavUser";
 import Credits from "./Credits";
+import Upgrade from "./Upgrade";
 
 interface User {
     id: string,
@@ -94,6 +95,7 @@ export default function AppSidebar({user}: Props) {
             <SidebarFooter className="bg-muted/30 border-t p-3">
                 <div className="mb-3 flex w-full items-center justify-center gap-2 text-xs">
                     <Credits credits={user.credits} />
+                    <Upgrade />
                 </div>
                 <NavUser links={navUserLinks} user={user} />
             </SidebarFooter>

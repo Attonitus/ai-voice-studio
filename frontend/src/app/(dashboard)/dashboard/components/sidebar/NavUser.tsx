@@ -19,6 +19,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { LogOut, type LucideIcon } from "lucide-react"
 import Link from "next/link"
+import { logoutAction } from "~/actions/tt"
 
 
 interface User {
@@ -41,7 +42,7 @@ interface Props {
     }[]
 }
 
-export function NavUser({links, user}: Props) {
+export function NavUser({ links, user }: Props) {
 
     const { isMobile } = useSidebar()
 
@@ -107,7 +108,15 @@ export function NavUser({links, user}: Props) {
 
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <LogOut /> Log out
+                            <form action={logoutAction} className="w-full">
+                                <button
+                                    type="submit"
+                                    className="flex w-full items-center gap-2"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Log out
+                                </button>
+                            </form>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
